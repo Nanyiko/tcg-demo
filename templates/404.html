@@ -1,0 +1,19 @@
+{% extends "base.html" %} {% block title %}Page Not Found{% endblock %} {% block
+content %}
+<div
+  class="d-flex flex-column align-items-center justify-content-center text-center"
+  style="min-height: 60vh"
+>
+  <!-- Big 404 text -->
+  <h1 class="display-1 fw-bold">404</h1>
+
+  <!-- Friendly message -->
+  <p class="fs-4">Oops! The page you’re looking for doesn’t exist.</p>
+  <p>It might have been moved, deleted, or the URL is incorrect.</p>
+
+  <!-- Navigation button -->
+  <a href="{{ url_for('index') }}" class="btn btn-secondary mt-3"
+    >Go Back Home</a
+  >
+</div>
+{% endblock %}
