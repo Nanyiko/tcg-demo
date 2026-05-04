@@ -1,0 +1,24 @@
+body {
+  background-color: var(--color-primary);
+}
+
+.navbar {
+  border-bottom: 5px solid var(--color-secondary);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+:root {
+  --color-primary: #c39bd3;
+  --color-secondary: #b892d4;
+  --color-tertiary: #d7a6c7;
+  --bs-body-bg: #c39bd3;
+  --bs-btn-color: #b892d4;
+  --bs-btn-border-color: #b892d4;
+  --bs-btn-hover-bg: #b892d4;
+  --bs-btn-hover-border-color: #b892d4;
+  --bs-btn-active-bg: #b892d4;
+  --bs-btn-active-border-color: #b892d4;
+  --bs-btn-disabled-color: #b892d4;
+  --bs-btn-disabled-border-color: #b892d4;
+}

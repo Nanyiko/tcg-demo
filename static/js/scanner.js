@@ -1,7 +1,7 @@
 // the link to your model provided by Teachable Machine export panel
 const URL = "/static/model/";
 
-let model, webcam, labelContainer, maxPredictions;
+let model, webcam, labelContainer, maxPredictions, className;
 
 // Load the image model and setup the webcam
 async function init() {
@@ -29,6 +29,8 @@ async function init() {
   // append elements to the DOM
   document.getElementById("webcam-container").appendChild(webcam.canvas);
   labelContainer = document.getElementById("label-container");
+  className = document.getElementById("class-name");
+
   for (let i = 0; i < maxPredictions; i++) {
     // and class labels
     labelContainer.appendChild(document.createElement("div"));
@@ -49,5 +51,8 @@ async function predict() {
     const classPrediction =
       prediction[i].className + ": " + prediction[i].probability.toFixed(2);
     labelContainer.childNodes[i].innerHTML = classPrediction;
+    if (prediction[i].probability.toFixed(2) > 0.95) {
+      className.innerHTML = prediction[i].className;
+    }
   }
 }
