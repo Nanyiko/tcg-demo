@@ -17,10 +17,16 @@ body {
 .btn-primary {
   --bs-btn-bg: #c39bd3;
   --bs-btn-hover-bg: #c39bd3;
+  --bs-btn-hover-border-color: #b892d4;
+  --bs-btn-active-border-color: #b892d4;
   --bs-btn-active-bg: #c39bd3;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   border: 1px solid #b892d4;
   border-bottom: 5px solid #b892d4;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
 }
