@@ -1,23 +1,28 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
-%}
-<div
-  class="d-flex h-100 text-center text-white bg-dark justify-content-center align-items-center"
->
-  <div
-    class="cover-container d-flex w-100 h-100 p-3 mx-auto justify-content-center"
-  >
-    <main class="px-3">
-      <h1>Cover your page.</h1>
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block
+head_extra %}
+<style>
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+    margin: 0;
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="container">
+  <div class="cover-container p-1">
+    <main class="px-3 text-center d-flex w-100 h-100 p-4 mx-auto flex-column">
+      <h1>Welcome to GNGC Connect</h1>
       <p class="lead">
-        Cover is a one-page template for building simple and beautiful home
-        pages. Download, edit the text, and add your own fullscreen background
-        photo to make it your own.
+        Welcome to GNGC Connect, your social platform to connect with friends
+        and share moments!
       </p>
       <p class="lead">
         <a
-          href="#"
-          class="btn btn-lg btn-secondary fw-bold border-white bg-white"
-          >Learn more</a
+          href="{{ url_for('auth.register') }}"
+          class="btn btn-lg btn-light fw-bold border-white"
+          >Click here to create an account</a
         >
       </p>
     </main>
