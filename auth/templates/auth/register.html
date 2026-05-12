@@ -67,7 +67,7 @@ content %}
     </div>
     <br />
 
-    <div class="form-group">
+    <!-- <div class="form-group">
       <label for="profile_pic"
         >Profile Picture <span class="text-muted-light">(Optional)</span></label
       >
@@ -78,12 +78,14 @@ content %}
         name="profile_pic"
       />
     </div>
-    <br />
+    <br /> -->
 
     <button type="submit" class="btn btn-primary">Register</button>
     <p class="mt-2">
       Already have an account?
-      <a href="{{ url_for('auth.login') }}">Click here to login</a>
+      <a href="{{ url_for('auth.login') }}" class="text-white bold"
+        >Click here to login</a
+      >
     </p>
     <script>
       let show = false;
