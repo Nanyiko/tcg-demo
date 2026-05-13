@@ -23,7 +23,7 @@ def load_user(id):
     return db.session.get(User, int(id))
 
 @app.route("/")
-def index():
+def home():
     return render_template("index.html")
 
 @app.route("/scanner")
@@ -31,4 +31,6 @@ def scanner():
     return render_template("scanner.html")
 
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run(debug=True, host="0.0.0.0")

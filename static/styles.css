@@ -30,3 +30,10 @@ body {
 .btn-primary:hover {
   transform: translateY(-3px);
 }
+
+.toast {
+  top: 10px;
+  right: 10px;
+  position: absolute;
+  z-index: 2000;
+}

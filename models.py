@@ -1,10 +1,10 @@
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 
 db = SQLAlchemy()
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = "User"
 
     id = db.Column(db.BigInteger, primary_key=True)
@@ -14,12 +14,6 @@ class User(db.Model):
 
     # relationship
     progress = db.relationship("Progress", back_populates="user", cascade="all, delete-orphan")
-
-    def set_password(self, password):
-        self.password = generate_password_hash(password)
-
-    def check_password(self, password):
-        return check_password_hash(self.password, password)
 
     def __repr__(self):
         return f"<User {self.username}>"
