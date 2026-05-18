@@ -1,13 +1,14 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = "User"
 
-    id = db.Column(db.BigInteger, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.Text, nullable=False, unique=True)
     password = db.Column(db.Text, nullable=False)
     admin = db.Column(db.Boolean, default=False)
@@ -29,7 +30,7 @@ class User(db.Model):
 class Task(db.Model):
     __tablename__ = "Task"
 
-    id = db.Column(db.BigInteger, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.BigInteger, db.ForeignKey("User.id"), nullable=False)
 
     title = db.Column(db.Text, nullable=False)
@@ -48,7 +49,7 @@ class Task(db.Model):
 class Progress(db.Model):
     __tablename__ = "Progress"
 
-    id = db.Column(db.BigInteger, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.BigInteger, db.ForeignKey("User.id"), nullable=False)
     task_id = db.Column(db.BigInteger, db.ForeignKey("Task.id"), nullable=False)
 
