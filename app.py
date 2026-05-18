@@ -43,7 +43,9 @@ def welcome():
 def scanner():
     return render_template("scanner.html")
 
-if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True, host="0.0.0.0")
+def init_db():
+    db_path = os.path.join(folder_path, "TCGDB.db")
+    
+    if not os.path.exists(db_path):
+        with app.app_context():
+            db.create_all()
