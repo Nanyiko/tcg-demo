@@ -1,0 +1,55 @@
+{% extends "base.html" %} {% block title %}Login{% endblock %} {% block content
+%}
+<div class="container mt-4">
+  <h1>Create Task</h1>
+  <form method="POST">
+    <div class="form-group">
+      <label for="title" class="fw-bold">Title:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="title"
+        name="title"
+        required
+        autocapitalize="words"
+      />
+    </div>
+    <br />
+
+    <div class="form-group">
+      <label for="description" class="fw-bold">Description</label>
+      <textarea
+        type="text"
+        class="form-control"
+        id="description"
+        name="description"
+        required
+        rows="5"
+      ></textarea>
+    </div>
+    <br />
+
+    <div class="form-group">
+      <label for="hint" class="fw-bold"
+        >Hint <span class="text-muted">(Optional)</span></label
+      >
+      <input type="text" class="form-control" id="hint" name="hint" rows="5" />
+    </div>
+    <br />
+
+    <div class="form-floating">
+      <select name="answer" id="answer" class="form-select" required>
+        <option selected>Choose an answer class</option>
+        <option value="pen">Pen</option>
+        <option value="tv">TV</option>
+      </select>
+      <label for="answer" class="fw-bold">Answer</label>
+    </div>
+    <br />
+
+    <button type="submit" class="btn btn-primary text-white">
+      Create Task
+    </button>
+  </form>
+</div>
+{% endblock %}

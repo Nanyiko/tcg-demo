@@ -2,6 +2,7 @@ from flask import Flask, jsonify, render_template, request, Blueprint, redirect,
 from flask_login import LoginManager, current_user, login_required
 from auth.auth import auth_bp
 from main.main import main_bp
+from admin.admin import admin_bp
 from models import db, User
 import os
 
@@ -13,6 +14,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{folder_path}/TCGDB.db"
 
 app.register_blueprint(auth_bp)
 app.register_blueprint(main_bp)
+app.register_blueprint(admin_bp)
 
 db.init_app(app)
 
@@ -28,8 +30,7 @@ def load_user(id):
 def home():
     if current_user.is_authenticated:
         if bool(current_user.admin):
-            # Insert admin login here
-            pass
+            return redirect(url_for("admin.tasks"))
         else:
             return redirect(url_for("main.tasks"))
     else:

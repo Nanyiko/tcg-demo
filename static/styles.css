@@ -37,3 +37,9 @@ body {
   position: absolute;
   z-index: 2000;
 }
+
+#add-btn {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+}

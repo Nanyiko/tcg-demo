@@ -4,6 +4,7 @@ from models import db, User, Task, Progress
 
 main_bp = Blueprint("main", __name__, url_prefix="/main", template_folder="templates")
 
+@login_required
 @main_bp.route("/tasks", methods=["GET", "POST"])
 def tasks():
     return render_template("main/tasks.html")
