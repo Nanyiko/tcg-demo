@@ -7,7 +7,8 @@ admin_bp = Blueprint("admin", __name__, url_prefix="/admin", template_folder="te
 @login_required
 @admin_bp.route("/tasks", methods=["GET", "POST"])
 def tasks():
-    return render_template("admin/tasks.html")
+    tasks = Task.query.all()
+    return render_template("admin/tasks.html", tasks=tasks, User=User)
 
 @login_required
 @admin_bp.route("/create_task", methods=["GET", "POST"])
@@ -22,6 +23,6 @@ def create_task():
         )
         db.session.add(newTask)
         db.session.commit()
-        flash("Account created, please log in", "success")
+        flash("Task created successfully", "success")
         return redirect(url_for("admin.tasks"))
     return render_template("admin/create_task.html")

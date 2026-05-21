@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime, timezone
 
 db = SQLAlchemy()
 
@@ -37,6 +38,7 @@ class Task(db.Model):
     description = db.Column(db.Text, nullable=False)
     hint = db.Column(db.Text, nullable=True)
     answer = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.Text, nullable=False, default=datetime.now(timezone.utc))
 
     # relationships
     creator = db.relationship("User", back_populates="tasks")
@@ -52,8 +54,8 @@ class Progress(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.BigInteger, db.ForeignKey("User.id"), nullable=False)
     task_id = db.Column(db.BigInteger, db.ForeignKey("Task.id"), nullable=False)
-
     completed = db.Column(db.Boolean, default=False)
+    completed_at = db.Column(db.Text, default=datetime.now(timezone.utc))
 
     # relationships
     user = db.relationship("User", back_populates="progress")

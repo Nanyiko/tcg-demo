@@ -1,6 +1,21 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
 %}
 <div class="container">
-  <h1>Hi!</h1>
+  {% for task in tasks %}
+  <div class="card mt-3">
+    <div class="card-header">
+      <p class="h5">{{ task.title }}</p>
+    </div>
+    <div class="card-body">
+      <p>Description:</p>
+      <p>{{ task.description }}</p>
+      <p>
+        Made by: {{ User.query.filter_by(id=task.user_id).first().username }}
+      </p>
+      <p>Created at: {{ task.created_at }}</p>
+      <button class="btn btn-primary">Show more...</button>
+    </div>
+  </div>
+  {% endfor %}
 </div>
 {% endblock %}
