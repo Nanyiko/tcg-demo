@@ -60,10 +60,14 @@
   const webcamContainer = document.getElementById("webcam-container");
   const successGif = document.getElementById("success-gif");
   let trial = classNameElement.innerHTML;
+  let completed = false;
 
   const observer = new MutationObserver(() => {
+    if (completed) return; // stop if already triggered
+
     trial = classNameElement.innerHTML;
     if (answer == trial) {
+      completed = true; // set flag immediately
       webcamContainer.classList.add("webcam-success");
       successGif.classList.remove("d-none");
       setTimeout(() => {
