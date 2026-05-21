@@ -4,7 +4,7 @@
   {% for task in tasks %}
   <div class="card mt-3">
     <div class="card-header">
-      <p class="h5">{{ task.title }}</p>
+      <p class="card-title h5 text-light">{{ task.title }}</p>
     </div>
     <div class="card-body">
       <p>Description:</p>
@@ -13,7 +13,51 @@
         Made by: {{ User.query.filter_by(id=task.user_id).first().username }}
       </p>
       <p>Created at: {{ task.created_at }}</p>
-      <button class="btn btn-primary">Show more...</button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#modal-{{task.id}}"
+      >
+        Show more...
+      </button>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div>
+  {% for task in tasks %}
+  <div
+    class="modal modal-xl fade"
+    id="modal-{{ task.id }}"
+    tabindex="-1"
+    role="dialog"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="modal-title h5 text-light">{{ task.title }}</p>
+          <button
+            class="btn-close btn-close-white"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <p>Description:</p>
+          <p>{{ task.description }}</p>
+          <p>
+            Made by: {{ User.query.filter_by(id=task.user_id).first().username
+            }}
+          </p>
+          <p>Created at: {{ task.created_at }}</p>
+          <a
+            class="btn btn-outline-secondary"
+            href="{{ url_for('scanner', id=task.id) }}"
+            >Open Scanner
+          </a>
+        </div>
+      </div>
     </div>
   </div>
   {% endfor %}

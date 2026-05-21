@@ -43,3 +43,25 @@ body {
   bottom: 15px;
   right: 15px;
 }
+
+#webcam-container {
+  margin: 3px;
+  transition: all 0.3s ease-in-out;
+}
+
+.webcam-success {
+  border: 3px solid #7dba9a;
+  margin: 0;
+  border-radius: 10px;
+}
+
+#success-gif {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  pointer-events: none;
+  z-index: 10;
+}

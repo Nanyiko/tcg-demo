@@ -1,27 +1,81 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
 %}
 <div class="container pmx-auto">
-  <h1 class="mb-4" style="text-align: center">Welcome to TCG SCANNER</h1>
-  <p class="mb-4" style="text-align: center">
-    Scan your trading cards with ease and keep track of your collection
-  </p>
+  <h1 class="mb-4" style="text-align: center">Scanner</h1>
+  <p class="mb-4" style="text-align: center">{{ task.title }}</p>
   <div class="d-flex mx-auto mb-4" id="box"></div>
   <button
     type="button"
     class="btn btn-primary btn-lg d-block mx-auto mb-4 text-light"
+    id="start-button"
     onclick="init()"
   >
     Start
   </button>
-  <div style="text-align: center" id="webcam-container"></div>
-  <div style="text-align: center" id="class-container">
+  <div style="text-align: center" id="loading-indicator" class="d-none">
+    <div class="spinner-border text-white" role="status"></div>
+  </div>
+  <div style="text-align: center; position: relative" id="webcam-container">
+    <img
+      id="success-gif"
+      src="{{ url_for('static', filename='/assets/thumb-up.gif') }}"
+      class="d-none"
+    />
+  </div>
+  <div style="text-align: center" id="class-container" class="d-none">
     <h2 id="class-name"></h2>
   </div>
   <div style="text-align: center" id="label-container"></div>
+  <div style="text-align: center" id="hint-container" class="d-none">
+    <button onclick="showHint()" class="btn btn-primary mt-3" id="show-hint">
+      Show hint
+    </button>
+    <p id="hint" class="d-none mt-3">{{ task.hint }}</p>
+  </div>
+  <div style="text-align: center" class="mt-3" id="instruction-container"></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 
 <script src="/static/js/scanner.js"></script>
+<script>
+  function showHint() {
+    const hint = document.getElementById("hint");
+    const showHint = document.getElementById("show-hint");
 
+    hint.classList.remove("d-none");
+    showHint.classList.add("d-none");
+  }
+
+  function toTitleCase(str) {
+    return str
+      .replace("-", " ")
+      .toLowerCase()
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  }
+
+  const classNameElement = document.getElementById("class-name");
+  const answer = toTitleCase("{{ task.answer }}");
+  const instruction = document.getElementById("instruction-container");
+  const webcamContainer = document.getElementById("webcam-container");
+  const successGif = document.getElementById("success-gif");
+  let trial = classNameElement.innerHTML;
+
+  const observer = new MutationObserver(() => {
+    trial = classNameElement.innerHTML;
+    if (answer == trial) {
+      webcamContainer.classList.add("webcam-success");
+      successGif.classList.remove("d-none");
+      setTimeout(() => {
+        window.location.href = "{{ url_for('complete_task', id=task.id) }}";
+      }, 5000);
+    }
+  });
+
+  observer.observe(classNameElement, {
+    childList: true,
+    characterData: true,
+    subtree: true,
+  });
+</script>
 {% endblock %}

@@ -1,9 +1,9 @@
-from flask import Flask, jsonify, render_template, request, Blueprint, redirect, url_for
+from flask import Flask, jsonify, render_template, request, Blueprint, redirect, url_for, flash
 from flask_login import LoginManager, current_user, login_required
 from auth.auth import auth_bp
 from main.main import main_bp
 from admin.admin import admin_bp
-from models import db, User,Task
+from models import db, User, Task, Progress
 import os
 
 app = Flask(__name__)
@@ -42,9 +42,26 @@ def welcome():
 
 @app.route("/scanner/<int:id>")
 def scanner(id):
-    answer = Task.query.filter_by(id=id).first().answer
-    print(answer)
-    return render_template("scanner.html", answer=answer)
+    task = Task.query.filter_by(id=id).first()
+    return render_template("scanner.html", task=task)
+
+@app.route("/complete_task/<int:id>")
+def complete_task(id):
+    task = Task.query.filter_by(id=id).first()
+    progress = Progress.query.filter_by(user_id=current_user.id, task_id=id).first()
+    if not progress:
+        newProgress = Progress(
+            user_id = current_user.id,
+            task_id = id,
+            completed = 1
+        )
+        db.session.add(newProgress)
+        db.session.commit()
+        flash(f"'{task.title}' completed", "success")
+        return redirect(url_for("main.tasks"))
+    else:
+        flash(f"'{task.title}' already completed", "info")
+        return redirect(url_for("main.tasks"))
 
 def init_db():
     db_path = os.path.join(folder_path, "TCGDB.db")
