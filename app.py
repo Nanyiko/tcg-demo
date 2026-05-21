@@ -3,7 +3,7 @@ from flask_login import LoginManager, current_user, login_required
 from auth.auth import auth_bp
 from main.main import main_bp
 from admin.admin import admin_bp
-from models import db, User
+from models import db, User,Task
 import os
 
 app = Flask(__name__)
@@ -40,9 +40,11 @@ def home():
 def welcome():
     return render_template("welcome.html")
 
-@app.route("/scanner")
-def scanner():
-    return render_template("scanner.html")
+@app.route("/scanner/<int:id>")
+def scanner(id):
+    answer = Task.query.filter_by(id=id).first().answer
+    print(answer)
+    return render_template("scanner.html", answer=answer)
 
 def init_db():
     db_path = os.path.join(folder_path, "TCGDB.db")
