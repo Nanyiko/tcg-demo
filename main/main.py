@@ -8,4 +8,4 @@ main_bp = Blueprint("main", __name__, url_prefix="/main", template_folder="templ
 @main_bp.route("/tasks", methods=["GET", "POST"])
 def tasks():
     tasks = Task.query.all()
-    return render_template("main/tasks.html", tasks=tasks, User=User)
+    return render_template("main/tasks.html", tasks=tasks, User=User, Progress=Progress)

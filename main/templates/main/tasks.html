@@ -1,52 +1,52 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
 %}
 <div class="container">
-  <nav>
+  <nav class="mt-3">
     <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
       <button
         class="nav-link active"
-        id="nav-home-tab"
+        id="nav-all-tab"
         data-bs-toggle="tab"
-        data-bs-target="#nav-home"
+        data-bs-target="#nav-all"
         type="button"
         role="tab"
-        aria-controls="nav-home"
+        aria-controls="nav-all"
         aria-selected="true"
       >
-        Home
+        All tasks
       </button>
       <button
         class="nav-link"
-        id="nav-profile-tab"
+        id="nav-incomplete-tab"
         data-bs-toggle="tab"
-        data-bs-target="#nav-profile"
+        data-bs-target="#nav-incomplete"
         type="button"
         role="tab"
-        aria-controls="nav-profile"
+        aria-controls="nav-incomplete"
         aria-selected="false"
       >
-        Profile
+        Incomplete tasks
       </button>
       <button
         class="nav-link"
-        id="nav-contact-tab"
+        id="nav-complete-tab"
         data-bs-toggle="tab"
-        data-bs-target="#nav-contact"
+        data-bs-target="#nav-complete"
         type="button"
         role="tab"
-        aria-controls="nav-contact"
+        aria-controls="nav-complete"
         aria-selected="false"
       >
-        Contact
+        Completed tasks
       </button>
     </div>
   </nav>
   <div class="tab-content" id="nav-tabContent">
     <div
       class="tab-pane fade show active"
-      id="nav-home"
+      id="nav-all"
       role="tabpanel"
-      aria-labelledby="nav-home-tab"
+      aria-labelledby="nav-all-tab"
     >
       {% for task in tasks %}
       <div class="card mt-3">
@@ -73,33 +73,66 @@
       </div>
       {% endfor %}
     </div>
-    <div
-      class="tab-pane fade"
-      id="nav-profile"
-      role="tabpanel"
-      aria-labelledby="nav-profile-tab"
-    >
-      <p>
-        This is some placeholder content the
-        <strong>Profile tab's</strong> associated content. Clicking another tab
-        will toggle the visibility of this one for the next. The tab JavaScript
-        swaps classes to control the content visibility and styling. You can use
-        it with tabs, pills, and any other <code>.nav</code>-powered navigation.
-      </p>
+    <div class="tab-pane fade" id="nav-incomplete" role="tabpanel">
+      {% for task in tasks %} {% if not
+      Progress.query.filter_by(user_id=current_user.id, task_id=task.id).first()
+      %}
+      <div class="card mt-3">
+        <div class="card-header">
+          <p class="card-title h5 text-light">{{ task.title }}</p>
+        </div>
+        <div class="card-body">
+          <p>Description:</p>
+          <p>{{ task.description }}</p>
+          <p>
+            Made by: {{ User.query.filter_by(id=task.user_id).first().username
+            }}
+          </p>
+          <p>Created at: {{ task.created_at }}</p>
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#modal-{{task.id}}"
+          >
+            Show more...
+          </button>
+        </div>
+      </div>
+      {% endif %} {% endfor %}
     </div>
     <div
       class="tab-pane fade"
-      id="nav-contact"
+      id="nav-complete"
       role="tabpanel"
-      aria-labelledby="nav-contact-tab"
+      aria-labelledby="nav-complete-tab"
     >
-      <p>
-        This is some placeholder content the
-        <strong>Contact tab's</strong> associated content. Clicking another tab
-        will toggle the visibility of this one for the next. The tab JavaScript
-        swaps classes to control the content visibility and styling. You can use
-        it with tabs, pills, and any other <code>.nav</code>-powered navigation.
-      </p>
+      {% for task in tasks %} {% if
+      Progress.query.filter_by(user_id=current_user.id, task_id=task.id).first()
+      %}
+      <div class="card mt-3">
+        <div class="card-header">
+          <p class="card-title h5 text-light">{{ task.title }}</p>
+        </div>
+        <div class="card-body">
+          <p>Description:</p>
+          <p>{{ task.description }}</p>
+          <p>
+            Made by: {{ User.query.filter_by(id=task.user_id).first().username
+            }}
+          </p>
+          <p>Created at: {{ task.created_at }}</p>
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#modal-{{task.id}}"
+          >
+            Show more...
+          </button>
+        </div>
+      </div>
+      {% endif %} {% endfor %}
     </div>
   </div>
 </div>
@@ -129,11 +162,16 @@
             }}
           </p>
           <p>Created at: {{ task.created_at }}</p>
+          {% if not Progress.query.filter_by(user_id=current_user.id,
+          task_id=task.id).first() %}
           <a
             class="btn btn-outline-secondary"
             href="{{ url_for('scanner', id=task.id) }}"
             >Open Scanner
           </a>
+          {% else %}
+          <button class="btn btn-success">Task complete</button>
+          {% endif %}
         </div>
       </div>
     </div>

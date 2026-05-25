@@ -3294,19 +3294,20 @@ fieldset:disabled .btn {
 }
 
 .btn-outline-success {
-  --bs-btn-color: #198754;
-  --bs-btn-border-color: #198754;
+  --bs-btn-color: #7dba9a;
+  background-color: #fff;
+  --bs-btn-border-color: #7dba9a;
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #198754;
-  --bs-btn-hover-border-color: #198754;
+  --bs-btn-hover-bg: #7dba9a;
+  --bs-btn-hover-border-color: #7dba9a;
   --bs-btn-focus-shadow-rgb: 25, 135, 84;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #198754;
-  --bs-btn-active-border-color: #198754;
+  --bs-btn-active-bg: #7dba9a;
+  --bs-btn-active-border-color: #7dba9a;
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  --bs-btn-disabled-color: #198754;
+  --bs-btn-disabled-color: #7dba9a;
   --bs-btn-disabled-bg: transparent;
-  --bs-btn-disabled-border-color: #198754;
+  --bs-btn-disabled-border-color: #7dba9a;
   --bs-gradient: none;
 }
 
@@ -3902,8 +3903,8 @@ fieldset:disabled .btn {
   --bs-nav-link-padding-x: 1rem;
   --bs-nav-link-padding-y: 0.5rem;
   --bs-nav-link-font-weight: ;
-  --bs-nav-link-color: var(--bs-link-color);
-  --bs-nav-link-hover-color: var(--bs-link-hover-color);
+  --bs-nav-link-color: #fff;
+  --bs-nav-link-hover-color: #fff;
   --bs-nav-link-disabled-color: var(--bs-secondary-color);
   display: flex;
   flex-wrap: wrap;
@@ -3920,7 +3921,6 @@ fieldset:disabled .btn {
   color: var(--bs-nav-link-color);
   text-decoration: none;
   background: none;
-  border: 0;
   transition:
     color 0.15s ease-in-out,
     background-color 0.15s ease-in-out,
@@ -3947,8 +3947,8 @@ fieldset:disabled .btn {
 }
 
 .nav-tabs {
-  --bs-nav-tabs-border-width: var(--bs-border-width);
-  --bs-nav-tabs-border-color: var(--bs-border-color);
+  --bs-nav-tabs-border-width: 2px;
+  --bs-nav-tabs-border-color: var(--bs-secondary);
   --bs-nav-tabs-border-radius: var(--bs-border-radius);
   --bs-nav-tabs-link-hover-border-color: var(--bs-secondary-bg)
     var(--bs-secondary-bg) var(--bs-border-color);
@@ -3961,7 +3961,7 @@ fieldset:disabled .btn {
 }
 .nav-tabs .nav-link {
   margin-bottom: calc(-1 * var(--bs-nav-tabs-border-width));
-  border: var(--bs-nav-tabs-border-width) solid transparent;
+  border: var(--bs-nav-tabs-border-width) solid var(--bs-secondary);
   border-top-left-radius: var(--bs-nav-tabs-border-radius);
   border-top-right-radius: var(--bs-nav-tabs-border-radius);
 }
@@ -3980,6 +3980,10 @@ fieldset:disabled .btn {
   margin-top: calc(-1 * var(--bs-nav-tabs-border-width));
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+.nav-link > .nav-tabs {
+  border: 2px solid var(--bs-secondary);
 }
 
 .nav-pills {
