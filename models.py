@@ -38,7 +38,7 @@ class Task(db.Model):
     description = db.Column(db.Text, nullable=False)
     hint = db.Column(db.Text, nullable=True)
     answer = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.Text, nullable=False, default=datetime.now(timezone.utc))
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))
 
     # relationships
     creator = db.relationship("User", back_populates="tasks")
@@ -55,7 +55,7 @@ class Progress(db.Model):
     user_id = db.Column(db.BigInteger, db.ForeignKey("User.id"), nullable=False)
     task_id = db.Column(db.BigInteger, db.ForeignKey("Task.id"), nullable=False)
     completed = db.Column(db.Boolean, default=False)
-    completed_at = db.Column(db.Text, default=datetime.now(timezone.utc))
+    completed_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
 
     # relationships
     user = db.relationship("User", back_populates="progress")

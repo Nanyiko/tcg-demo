@@ -31,15 +31,21 @@ def login():
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        hashedPass = generate_password_hash(request.form["password"])
-        newUser = User(
-            username = request.form["username"],
-            password = hashedPass,
-        )
-        db.session.add(newUser)
-        db.session.commit()
-        flash("Account created, please log in", "success")
-        return redirect(url_for("auth.login"))
+        user = User.query.filter(
+            func.lower(User.username) == request.form["username"]
+        ).first()
+        if user:
+            flash("Account already exists", "danger")
+        else:
+            hashedPass = generate_password_hash(request.form["password"])
+            newUser = User(
+                username = request.form["username"],
+                password = hashedPass,
+            )
+            db.session.add(newUser)
+            db.session.commit()
+            flash("Account created, please log in", "success")
+            return redirect(url_for("auth.login"))
 
     return render_template("auth/register.html")
 

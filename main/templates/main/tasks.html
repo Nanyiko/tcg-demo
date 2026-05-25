@@ -71,7 +71,9 @@
           </button>
         </div>
       </div>
-      {% endfor %}
+      {% endfor %} {% if tasks == [] %}
+      <p>Nothing to see here</p>
+      {% endif %}
     </div>
     <div class="tab-pane fade" id="nav-incomplete" role="tabpanel">
       {% for task in tasks %} {% if not

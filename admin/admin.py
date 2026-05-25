@@ -8,7 +8,7 @@ admin_bp = Blueprint("admin", __name__, url_prefix="/admin", template_folder="te
 @admin_bp.route("/tasks", methods=["GET", "POST"])
 def tasks():
     tasks = Task.query.all()
-    return render_template("admin/tasks.html", tasks=tasks, User=User)
+    return render_template("admin/tasks.html", tasks=tasks, User=User, Progress=Progress)
 
 @login_required
 @admin_bp.route("/create_task", methods=["GET", "POST"])
