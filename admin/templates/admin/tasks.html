@@ -36,55 +36,14 @@
       role="tabpanel"
       aria-labelledby="nav-all-tab"
     >
-      {% for task in tasks %}
-      <div class="card mt-3">
-        <div class="card-header">
-          <p class="card-title h5 text-light">{{ task.title }}</p>
-        </div>
-        <div class="card-body">
-          <p>Description:</p>
-          <p>{{ task.description }}</p>
-          <p>
-            Made by: {{ User.query.filter_by(id=task.user_id).first().username
-            }}
-          </p>
-          <p>Created at: {{ task.created_at }}</p>
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#modal-{{task.id}}"
-          >
-            Show more...
-          </button>
-        </div>
-      </div>
-      {% endfor %} {% if tasks == [] %}
+      {% for task in tasks %} {% include 'task.html' %} {% endfor %} {% if tasks
+      == [] %}
       <p>Nothing to see here</p>
       {% endif %}
     </div>
     <div class="tab-pane fade" id="nav-personal" role="tabpanel">
-      {% for task in tasks %} {% if task.id == current_user.id %}
-      <div class="card mt-3">
-        <div class="card-header">
-          <p class="card-title h5 text-light">{{ task.title }}</p>
-        </div>
-        <div class="card-body">
-          <p>Description:</p>
-          <p>{{ task.description }}</p>
-          <p>Made by: You</p>
-          <p>Created at: {{ task.created_at.strftime('%b %d, %Y %H:%M') }}</p>
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#modal-{{task.id}}"
-          >
-            Show more...
-          </button>
-        </div>
-      </div>
-      {% endif %} {% endfor %}
+      {% for task in tasks %} {% if task.id == current_user.id %} {% include
+      'task.html' %} {% endif %} {% endfor %}
     </div>
   </div>
 </div>
@@ -109,45 +68,5 @@
   </svg>
 </a>
 
-<div>
-  {% for task in tasks %}
-  <div
-    class="modal modal-xl fade"
-    id="modal-{{ task.id }}"
-    tabindex="-1"
-    role="dialog"
-  >
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <p class="modal-title h5 text-light">{{ task.title }}</p>
-          <button
-            class="btn-close btn-close-white"
-            data-bs-dismiss="modal"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <p>Description:</p>
-          <p>{{ task.description }}</p>
-          <p>
-            Made by: {{ User.query.filter_by(id=task.user_id).first().username
-            }}
-          </p>
-          <p>Created at: {{ task.created_at }}</p>
-          {% if not Progress.query.filter_by(user_id=current_user.id,
-          task_id=task.id).first() %}
-          <a
-            class="btn btn-outline-secondary"
-            href="{{ url_for('scanner', id=task.id) }}"
-            >Open Scanner
-          </a>
-          {% else %}
-          <button class="btn btn-success">Task complete</button>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-  </div>
-  {% endfor %}
-</div>
+<div>{% for task in tasks %} {% include 'modal.html' %} {% endfor %}</div>
 {% endblock %}

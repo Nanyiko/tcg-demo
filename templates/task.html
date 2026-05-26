@@ -1,0 +1,31 @@
+<div class="card mt-3">
+  <div class="card-header">
+    <p class="card-title h5 text-light">{{ task.title }}</p>
+  </div>
+  <div class="card-body">
+    <p>Description:</p>
+    <p class="fw-semibold">{{ task.description }}</p>
+    <p>
+      Made by:
+      <span class="fw-semibold"
+        >{% if current_user.id == task.user_id %} You {% else %} {{
+        User.query.filter_by(id=task.user_id).first().username }} {% endif
+        %}</span
+      >
+    </p>
+    <p>
+      Created at:
+      <span class="fw-semibold"
+        >{{ task.created_at.strftime("%I:%M %p, %d-%m-%Y") }}</span
+      >
+    </p>
+    <button
+      type="button"
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#modal-{{task.id}}"
+    >
+      Show more...
+    </button>
+  </div>
+</div>
