@@ -12,6 +12,8 @@ content %}
         name="username"
         required
         oninput="checkPassword()"
+        autocapitalize="none"
+        autocomplete="off"
       />
     </div>
     <br />
@@ -125,7 +127,9 @@ content %}
       id="submit-button"
       disabled
       class="btn btn-primary text-white"
-      type="submit"
+      type="button"
+      data-bs-toggle="modal"
+      data-bs-target="#user-type"
     >
       Register
     </button>
@@ -185,6 +189,39 @@ content %}
         }
       }
     </script>
+    <div class="modal fade" id="user-type" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <p class="modal-title fw-bold">Choose a user type</p>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm my-1" style="text-align: center">
+                <button
+                  class="btn btn-primary btn-lg"
+                  name="user-type"
+                  type="submit"
+                  value="user"
+                >
+                  User
+                </button>
+              </div>
+              <div class="col-sm my-1" style="text-align: center">
+                <button
+                  class="btn btn-primary btn-lg"
+                  name="user-type"
+                  type="submit"
+                  value="admin"
+                >
+                  Admin
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </form>
 </div>
 {% endblock %}

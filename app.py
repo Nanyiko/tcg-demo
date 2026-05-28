@@ -40,6 +40,10 @@ def home():
 def welcome():
     return render_template("welcome.html")
 
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("404.html"), 404
+
 @app.route("/scanner/<int:id>")
 def scanner(id):
     task = Task.query.filter_by(id=id).first()

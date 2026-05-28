@@ -41,6 +41,7 @@ def register():
             newUser = User(
                 username = request.form["username"],
                 password = hashedPass,
+                admin = request.form["user-type"] == "admin"
             )
             db.session.add(newUser)
             db.session.commit()
