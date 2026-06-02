@@ -48,3 +48,8 @@ def save_classifier():
     db.session.commit()
 
     return jsonify({"status": "saved"})
+
+@admin_bp.route("/save-classifier", methods=["GET"])
+@login_required
+def train():
+    return render_template("admin/train.html")
