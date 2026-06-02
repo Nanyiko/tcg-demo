@@ -10,13 +10,22 @@ async function init() {
     video: { facingMode: "environment" },
   });
   video.srcObject = stream;
+
+  await new Promise((resolve) =>
+    video.addEventListener("loadeddata", resolve, { once: true }),
+  );
+  document.getElementById("status").innerHTML = "Camera ready!";
 }
 
+let isModelReady = false;
+
 function modelReady() {
+  isModelReady = true;
   document.getElementById("status").innerHTML = "Ready!";
 }
 
 function addSample() {
+  if (!isModelReady) return alert("Model is still loading, please wait");
   const className = document.getElementById("class-name").value.trim();
   if (!className) return alert("Enter a class name first");
 
