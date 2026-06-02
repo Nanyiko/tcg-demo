@@ -24,6 +24,7 @@ async function init() {
 function modelReady() {
   isModelReady = true;
   document.getElementById("status").innerHTML = "Ready!";
+  document.getElementById("loading-spinner").classList.add("d-none");
 }
 
 function addSample() {

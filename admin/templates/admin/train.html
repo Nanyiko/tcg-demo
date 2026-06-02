@@ -2,8 +2,13 @@
 %}
 <script src="https://unpkg.com/ml5@0.12.2/dist/ml5.min.js"></script>
 <script src="{{ url_for('static', filename='js/train.js') }}"></script>
-<div class="container" style="text-align: center">
-  <div id="webcam-container"></div>
+<div class="container" style="text-align: center; justify-content: center">
+  <video
+    id="webcam"
+    autoplay
+    playsinline
+    style="width: 100%; max-width: 400px; display: block"
+  ></video>
 
   <input
     type="text"
