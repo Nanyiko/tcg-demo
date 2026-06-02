@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
 from flask_login import current_user, login_required
-from models import db, User, Task, Progress
+from models import db, User, Task, Progress, Class
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin", template_folder="templates")
 
@@ -16,13 +16,45 @@ def create_task():
     if request.method == "POST":
         newTask = Task(
             user_id = current_user.id,
+            class_id = request.form["class-id"],
             title = request.form["title"],
             description = request.form["description"],
             hint = request.form["hint"],
-            answer = request.form["answer"],
         )
         db.session.add(newTask)
         db.session.commit()
         flash("Task created successfully", "success")
         return redirect(url_for("admin.tasks"))
-    return render_template("admin/create_task.html")
+    return render_template("admin/create_task.html", Class=Class)
+
+@admin_bp.route("/save-classifier", methods=["POST"])
+@login_required
+def save_classifier():
+    import json, os
+    data = request.get_json()
+
+    os.makedirs("static/classifier", exist_ok=True)
+    with open("static/classifier/model.json", "w") as f:
+        json.dump({k: v for k, v in data.items() if k not in ["class_name", "location", "lat", "lon"]}, f)
+
+    new_class = Class(
+        user_id=current_user.id,
+        class_name=data["class_name"],
+        location=data.get("location", False),
+        lat=data.get("lat"),
+        lon=data.get("lon")
+    )
+    db.session.add(new_class)
+    db.session.commit()
+
+    return jsonify({"status": "saved"})
+
+@admin_bp.route("/save-classifier", methods=["POST"])
+@login_required
+def save_classifier():
+    import json, os
+    model_data = request.get_json()
+    os.makedirs("static/classifier", exist_ok=True)
+    with open("static/classifier/model.json", "w") as f:
+        json.dump(model_data, f)
+    return jsonify({"status": "saved"})

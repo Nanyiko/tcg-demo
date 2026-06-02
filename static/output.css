@@ -2407,7 +2407,7 @@ textarea.form-control-lg {
 }
 
 .form-check-input {
-  --bs-form-check-bg: var(--bs-body-bg);
+  --bs-form-check-bg: var(--bs-secondary);
   flex-shrink: 0;
   width: 1em;
   height: 1em;
@@ -5145,8 +5145,8 @@ fieldset:disabled .btn {
 }
 
 .list-group {
-  --bs-list-group-color: var(--bs-body-color);
-  --bs-list-group-bg: var(--bs-body-bg);
+  --bs-list-group-color: #fff;
+  --bs-list-group-bg: var(--bs-primary);
   --bs-list-group-border-color: var(--bs-border-color);
   --bs-list-group-border-width: var(--bs-border-width);
   --bs-list-group-border-radius: var(--bs-border-radius);

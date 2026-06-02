@@ -40,7 +40,11 @@
           <ul class="navbar-nav ms-auto">
             <!-- insert navigation links here -->
             <a href="{{ url_for('home') }}" class="nav-link">Home</a>
-            {% if current_user.is_authenticated %}
+            {% if current_user.admin == 1 %}
+            <a href="{{ url_for('admin.train') }}" class="nav-link"
+              >Add class</a
+            >
+            {% endif %} {% if current_user.is_authenticated %}
             <a href="{{ url_for('auth.logout') }}" class="nav-link">Logout</a>
             {% else %}
             <a href="{{ url_for('auth.login') }}" class="nav-link">Login</a>
