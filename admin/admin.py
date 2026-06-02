@@ -14,17 +14,21 @@ def tasks():
 @admin_bp.route("/create_task", methods=["GET", "POST"])
 def create_task():
     if request.method == "POST":
-        newTask = Task(
-            user_id = current_user.id,
-            class_id = request.form["class-id"],
-            title = request.form["title"],
-            description = request.form["description"],
-            hint = request.form["hint"],
-        )
-        db.session.add(newTask)
-        db.session.commit()
-        flash("Task created successfully", "success")
-        return redirect(url_for("admin.tasks"))
+        print(request.form["class-id"])
+        if request.form["class-id"] != "Choose an answer class":
+            newTask = Task(
+                user_id = current_user.id,
+                class_id = int(request.form["class-id"]),
+                title = request.form["title"],
+                description = request.form["description"],
+                hint = request.form["hint"],
+            )
+            db.session.add(newTask)
+            db.session.commit()
+            flash("Task created successfully", "success")
+            return redirect(url_for("admin.tasks"))
+        else:
+            flash("Choose an answer class", "warning")
     return render_template("admin/create_task.html", Class=Class)
 
 @admin_bp.route("/save-classifier", methods=["POST"])
@@ -53,3 +57,12 @@ def save_classifier():
 @login_required
 def train():
     return render_template("admin/train.html")
+
+@admin_bp.route("/delete_task/<int:id>", methods=["GET"])
+@login_required
+def delete_task(id):
+    task = Task.query.filter_by(id=id).first()
+    db.session.delete(task)
+    db.session.commit()
+    flash("Task deleted successfully", "success")
+    return redirect(url_for("admin.tasks"))
