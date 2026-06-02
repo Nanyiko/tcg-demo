@@ -52,7 +52,8 @@ def scanner(id):
 @app.route("/complete_task/<int:id>")
 def complete_task(id):
     task = Task.query.filter_by(id=id).first()
-    progress = Progress.query.filter_by(user_id=current_user.id, task_id=id).first()
+    if current_user.is_authenticated:
+        progress = Progress.query.filter_by(user_id=current_user.id, task_id=id).first()
     if not progress:
         newProgress = Progress(
             user_id = current_user.id,
