@@ -38,7 +38,7 @@
     <br />
 
     <div class="form-floating">
-      <select name="answer" id="answer" class="form-select" required>
+      <select name="class-id" id="class-id" class="form-select" required>
         <option selected>Choose an answer class</option>
         {% for answer in Class.query.all() %}
         <option value="{{ answer.id }}">
