@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% block title %}Train{% endblock %} {% block content
 %}
-
+<script src="https://unpkg.com/ml5@0.12.2/dist/ml5.min.js"></script>
+<script src="{{ url_for('static', filename='js/train.js') }}"></script>
 <div class="container" style="text-align: center">
   <div id="webcam-container"></div>
 
@@ -92,9 +93,6 @@
       document.getElementById("class-name").innerText;
   });
 </script>
-
-<script src="https://unpkg.com/ml5@0.12.2/dist/ml5.min.js"></script>
-<script src="{{ url_for('static', filename='js/train.js') }}"></script>
 <button
   class="btn btn-lg btn-primary"
   id="bottom-btn"

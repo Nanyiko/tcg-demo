@@ -53,7 +53,7 @@ def save_classifier():
 
     return jsonify({"status": "saved"})
 
-@admin_bp.route("/save-classifier", methods=["GET"])
+@admin_bp.route("/train", methods=["GET", "POST"])
 @login_required
 def train():
     return render_template("admin/train.html")

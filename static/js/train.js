@@ -1,5 +1,8 @@
 let featureExtractor, classifier, video;
 let samples = {};
+let isModelReady = false;
+let savedLat = null;
+let savedLon = null;
 
 async function init() {
   featureExtractor = ml5.featureExtractor("MobileNet", modelReady);
@@ -14,10 +17,9 @@ async function init() {
   await new Promise((resolve) =>
     video.addEventListener("loadeddata", resolve, { once: true }),
   );
-  document.getElementById("status").innerHTML = "Camera ready!";
+  document.getElementById("status").innerHTML =
+    "Camera ready - waiting for model...";
 }
-
-let isModelReady = false;
 
 function modelReady() {
   isModelReady = true;
@@ -26,6 +28,7 @@ function modelReady() {
 
 function addSample() {
   if (!isModelReady) return alert("Model is still loading, please wait");
+
   const className = document.getElementById("class-name").value.trim();
   if (!className) return alert("Enter a class name first");
 
@@ -128,9 +131,6 @@ function renderGallery() {
     )
     .join("");
 }
-
-let savedLat = null;
-let savedLon = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   document
