@@ -48,13 +48,3 @@ def save_classifier():
     db.session.commit()
 
     return jsonify({"status": "saved"})
-
-@admin_bp.route("/save-classifier", methods=["POST"])
-@login_required
-def save_classifier():
-    import json, os
-    model_data = request.get_json()
-    os.makedirs("static/classifier", exist_ok=True)
-    with open("static/classifier/model.json", "w") as f:
-        json.dump(model_data, f)
-    return jsonify({"status": "saved"})
