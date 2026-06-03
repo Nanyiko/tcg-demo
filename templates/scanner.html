@@ -49,6 +49,10 @@
 
     hint.classList.remove("d-none");
     showHint.classList.add("d-none");
+    if (hint.innerText == "") {
+      showHint.innerText = "No hint";
+      showHint.classList.add("text-muted");
+    }
   }
 
   function toTitleCase(str) {
@@ -59,9 +63,7 @@
   }
 
   const classNameElement = document.getElementById("class-name");
-  const answer = toTitleCase(
-    "{{ Class.query.filter_by(id=task.class_id).class_name }}",
-  );
+  const answer = "{{ Class.query.filter_by(id=task.class_id).class_name }}";
   const instruction = document.getElementById("instruction-container");
   const webcamContainer = document.getElementById("webcam-container");
   const successGif = document.getElementById("success-gif");
