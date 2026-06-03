@@ -40,6 +40,7 @@
   </div>
   <div style="text-align: center" class="mt-3" id="instruction-container"></div>
 </div>
+<p>{{ Class.query.filter_by(id=task.class_id).class_name }}</p>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 
