@@ -15,11 +15,7 @@
   <div style="text-align: center" id="loading-indicator" class="d-none">
     <div class="spinner-border text-white" role="status"></div>
   </div>
-  <div
-    style="text-align: center; position: relative"
-    id="webcam-container"
-    class="p-0 m-0"
-  >
+  <div style="text-align: center; position: relative" id="webcam-container">
     <img
       id="success-gif"
       src="{{ url_for('static', filename='/assets/thumb-up.gif') }}"
@@ -34,13 +30,10 @@
     <button onclick="showHint()" class="btn btn-primary mt-3" id="show-hint">
       Show hint
     </button>
-    <p id="hint" class="d-none mt-3">
-      {{ Class.query.filter_by(id=task.class_id).class_name }}
-    </p>
+    <p id="hint" class="d-none mt-3">{{ task.hint }}</p>
   </div>
   <div style="text-align: center" class="mt-3" id="instruction-container"></div>
 </div>
-<p>{{ Class.query.filter_by(id=task.class_id).class_name }}</p>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 
@@ -51,11 +44,10 @@
     const showHint = document.getElementById("show-hint");
 
     hint.classList.remove("d-none");
-    classNameElement.classList.remove("d-none");
     showHint.classList.add("d-none");
     if (hint.innerText == "") {
-      showHint.innerText = "No hint";
-      showHint.classList.add("text-muted");
+      hint.innerText = "No hint";
+      hint.classList.add("text-muted");
     }
   }
 
@@ -67,9 +59,10 @@
   }
 
   const classNameElement = document.getElementById("class-name");
-  const answer = "{{ Class.query.filter_by(id=task.class_id).class_name }}";
+  const answer = toTitleCase(
+    "{{ Class.query.filter_by(id=task.class_id).first().class_name }}",
+  );
   const instruction = document.getElementById("instruction-container");
-  const webcamContainer = document.getElementById("webcam-container");
   const successGif = document.getElementById("success-gif");
   let trial = classNameElement.innerHTML;
   let completed = false;
@@ -80,7 +73,7 @@
     trial = classNameElement.innerHTML;
     if (answer == trial) {
       completed = true; // set flag immediately
-      webcamContainer.classList.add("webcam-success");
+      document.getElementById("webcam").classList.add("webcam-success");
       successGif.classList.remove("d-none");
       setTimeout(() => {
         window.location.href = "{{ url_for('complete_task', id=task.id) }}";

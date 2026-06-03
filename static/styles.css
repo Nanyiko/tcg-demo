@@ -44,13 +44,19 @@ body {
   right: 15px;
 }
 
-#webcam-container {
-  margin: 3px;
+#webcam {
+  margin: 5px;
   transition: all 0.3s ease-in-out;
 }
 
+#webcam-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .webcam-success {
-  border: 3px solid #7dba9a;
+  border: 5px solid #198754;
   margin: 0;
   border-radius: 10px;
 }
@@ -60,8 +66,9 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 80px;
-  height: 80px;
+  width: 200px;
+  height: 200px;
   pointer-events: none;
   z-index: 10;
+  transition: all 0.3s ease-in-out;
 }
