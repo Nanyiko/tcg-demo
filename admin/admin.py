@@ -50,9 +50,8 @@ def save_class():
     )
     db.session.add(new_class)
     db.session.commit()
-    flash(f"'{new_class.class_name}' class added successfully", "success")
 
-    return redirect(url_for("admin.create_task"))
+    return jsonify({"status": "saved"})
 
 @admin_bp.route("/train", methods=["GET", "POST"])
 @login_required

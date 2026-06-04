@@ -67,7 +67,7 @@ async function trainAndSave() {
     document.getElementById("status").innerHTML = "Saving...";
     const modelData = await classifier.getClassifierData();
 
-    await fetch("/admin/save-class", {
+    const response = await fetch("/admin/save-class", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -78,6 +78,11 @@ async function trainAndSave() {
         lon: savedLon,
       }),
     });
+
+    const result = await response.json();
+    if (result.status === "saved") {
+      window.location.href = "/admin/tasks"; // hardcode the URL
+    }
     window.location.href = "{{ url_for('save-class') }}";
 
     document.getElementById("status").innerHTML = "Saved!";
