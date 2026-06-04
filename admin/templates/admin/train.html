@@ -43,7 +43,7 @@
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label for="user_id">Created by:</label>
+            <label>Created by:</label>
             <input
               class="form-control"
               type="text"
@@ -59,10 +59,8 @@
               class="form-control"
               type="text"
               id="confirm-class-name"
-              placeholder="Insert class name"
               readonly
               name="class-name"
-              value=""
             />
           </div>
           <br />
@@ -79,6 +77,13 @@
               <label class="form-check-label" for="flexCheckDefault">
                 Add current location
               </label>
+              <div
+                class="spinner-border text-light d-none"
+                role="status"
+                id="location-spinner"
+              >
+                <span class="sr-only"></span>
+              </div>
             </div>
           </div>
         </div>
@@ -98,7 +103,7 @@
 
 <script>
   document.addEventListener("shown.bs.modal", () => {
-    document.getElementById("confirm-class-name").value =
+    document.getElementById("confirm-class-name").placeholder =
       document.getElementById("class-name").value;
   });
 </script>
@@ -133,7 +138,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <p class="modal-title">How to train</p>
+        <p class="modal-title">Add class</p>
       </div>
       <div class="modal-body">
         <ol class="list-group list-group-flush">
@@ -153,11 +158,7 @@
             (aim for at least 20 samples per class)
           </li>
           <li class="list-group-item">
-            Change the class name and repeat for each object or location you
-            want to add
-          </li>
-          <li class="list-group-item">
-            Once all classes have enough samples, click
+            Once the class has enough samples, click
             <strong>Train & Save</strong>
           </li>
           <li class="list-group-item">

@@ -52,11 +52,18 @@ let isTraining = false;
 async function trainAndSave() {
   if (isTraining) return;
   isTraining = true;
-  samples;
-  if (classNames.length < 1) return alert("Add at least one class first");
+
+  const classNames = Object.keys(samples);
+  if (classNames.length < 1) {
+    isTraining = false;
+    return alert("Add at least one class first");
+  }
 
   const minSamples = Math.min(...classNames.map((c) => samples[c].length));
-  if (minSamples < 5) return alert("Add at least 5 samples per class");
+  if (minSamples < 5) {
+    isTraining = false;
+    return alert("Add at least 5 samples per class");
+  }
 
   document.getElementById("status").innerHTML = "Training...";
 
@@ -68,11 +75,10 @@ async function trainAndSave() {
       }
     },
     async () => {
-      isTraining = false;
       document.getElementById("status").innerHTML = "Saving...";
 
       classifier.save(async (data) => {
-        await fetch("/admin/save-class", {
+        const response = await fetch("/admin/save-class", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -85,6 +91,7 @@ async function trainAndSave() {
         });
 
         const result = await response.json();
+        isTraining = false;
         if (result.status === "saved") {
           window.location.href = "/admin/tasks";
         }
@@ -148,12 +155,14 @@ document.addEventListener("DOMContentLoaded", () => {
     .getElementById("flexCheckDefault")
     .addEventListener("change", function () {
       if (this.checked) {
+        document.getElementById("location-spinner").classList.remove("d-none");
         navigator.geolocation.getCurrentPosition(
           (position) => {
             savedLat = position.coords.latitude;
             savedLon = position.coords.longitude;
             document.getElementById("location").innerHTML +=
               ` <small class="text-success">(${savedLat.toFixed(4)}, ${savedLon.toFixed(4)})</small>`;
+            document.getElementById("location-spinner").classList.add("d-none");
           },
           () => {
             this.checked = false;
