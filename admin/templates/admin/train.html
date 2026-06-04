@@ -83,7 +83,11 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary" onclick="trainAndSave()">
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="trainAndSave()"
+          >
             Train & Save
           </button>
         </div>
@@ -95,9 +99,7 @@
 <script>
   document.addEventListener("shown.bs.modal", () => {
     document.getElementById("confirm-class-name").value =
-      document.getElementById("class-name").innerText;
-    document.getElementById("confirm-class-name").placeholder =
-      document.getElementById("class-name").innerText;
+      document.getElementById("class-name").value;
   });
 </script>
 <button
