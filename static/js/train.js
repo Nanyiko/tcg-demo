@@ -47,8 +47,12 @@ function addSample() {
   renderGallery();
 }
 
+let isTraining = false;
+
 async function trainAndSave() {
-  const classNames = Object.keys(samples);
+  if (isTraining) return;
+  isTraining = true;
+  samples;
   if (classNames.length < 1) return alert("Add at least one class first");
 
   const minSamples = Math.min(...classNames.map((c) => samples[c].length));
@@ -56,37 +60,37 @@ async function trainAndSave() {
 
   document.getElementById("status").innerHTML = "Training...";
 
-  classifier.train(async (lossValue) => {
-    if (lossValue !== null) {
-      document.getElementById("status").innerHTML =
-        `Training... loss: ${lossValue.toFixed(4)}`;
-      return;
-    }
+  classifier.train(
+    (lossValue) => {
+      if (lossValue) {
+        document.getElementById("status").innerHTML =
+          `Training... loss: ${lossValue.loss ? lossValue.loss.toFixed(4) : "..."}`;
+      }
+    },
+    async () => {
+      isTraining = false;
+      document.getElementById("status").innerHTML = "Saving...";
 
-    // Training complete
-    document.getElementById("status").innerHTML = "Saving...";
-    const modelData = await classifier.getClassifierData();
+      classifier.save(async (data) => {
+        await fetch("/admin/save-class", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...data,
+            class_name: document.getElementById("confirm-class-name").value,
+            location: document.getElementById("flexCheckDefault").checked,
+            lat: savedLat,
+            lon: savedLon,
+          }),
+        });
 
-    const response = await fetch("/admin/save-class", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...modelData,
-        class_name: document.getElementById("confirm-class-name").value,
-        location: document.getElementById("flexCheckDefault").checked,
-        lat: savedLat,
-        lon: savedLon,
-      }),
-    });
-
-    const result = await response.json();
-    if (result.status === "saved") {
-      window.location.href = "/admin/tasks"; // hardcode the URL
-    }
-    window.location.href = "{{ url_for('save-class') }}";
-
-    document.getElementById("status").innerHTML = "Saved!";
-  });
+        const result = await response.json();
+        if (result.status === "saved") {
+          window.location.href = "/admin/tasks";
+        }
+      });
+    },
+  );
 }
 
 function removeSample(className, index) {
