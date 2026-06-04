@@ -38,10 +38,13 @@
     <br />
 
     <div class="form-floating">
-      <select name="answer" id="answer" class="form-select" required>
+      <select name="class-id" id="class-id" class="form-select" required>
         <option selected>Choose an answer class</option>
-        <option value="pen">Pen</option>
-        <option value="tv">TV</option>
+        {% for answer in Class.query.all() %}
+        <option value="{{ answer.id }}">
+          {{ answer.class_name.title().replace("_", " ") }}
+        </option>
+        {% endfor %}
       </select>
       <label for="answer" class="fw-bold">Answer</label>
     </div>

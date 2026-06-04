@@ -45,6 +45,10 @@
 
     hint.classList.remove("d-none");
     showHint.classList.add("d-none");
+    if (hint.innerText == "") {
+      hint.innerText = "No hint";
+      hint.classList.add("text-muted");
+    }
   }
 
   function toTitleCase(str) {
@@ -55,9 +59,10 @@
   }
 
   const classNameElement = document.getElementById("class-name");
-  const answer = toTitleCase("{{ task.answer }}");
+  const answer = toTitleCase(
+    "{{ Class.query.filter_by(id=task.class_id).first().class_name }}",
+  );
   const instruction = document.getElementById("instruction-container");
-  const webcamContainer = document.getElementById("webcam-container");
   const successGif = document.getElementById("success-gif");
   let trial = classNameElement.innerHTML;
   let completed = false;
@@ -68,7 +73,7 @@
     trial = classNameElement.innerHTML;
     if (answer == trial) {
       completed = true; // set flag immediately
-      webcamContainer.classList.add("webcam-success");
+      document.getElementById("webcam").classList.add("webcam-success");
       successGif.classList.remove("d-none");
       setTimeout(() => {
         window.location.href = "{{ url_for('complete_task', id=task.id) }}";
