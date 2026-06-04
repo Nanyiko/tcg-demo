@@ -22,6 +22,7 @@ let isModelReady = false;
 function modelReady() {
   isModelReady = true;
   document.getElementById("status").innerHTML = "Ready!";
+  document.getElementById("loading-spinner").classList.add("d-none");
 }
 
 function addSample() {
@@ -77,6 +78,7 @@ async function trainAndSave() {
         lon: savedLon,
       }),
     });
+    window.location.href = "{{ url_for('save-class') }}";
 
     document.getElementById("status").innerHTML = "Saved!";
   });
