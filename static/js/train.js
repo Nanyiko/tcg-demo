@@ -1,8 +1,5 @@
 let featureExtractor, classifier, video;
 let samples = {};
-let isModelReady = false;
-let savedLat = null;
-let savedLon = null;
 
 async function init() {
   featureExtractor = ml5.featureExtractor("MobileNet", modelReady);
@@ -17,19 +14,18 @@ async function init() {
   await new Promise((resolve) =>
     video.addEventListener("loadeddata", resolve, { once: true }),
   );
-  document.getElementById("status").innerHTML =
-    "Camera ready - waiting for model...";
+  document.getElementById("status").innerHTML = "Camera ready!";
 }
+
+let isModelReady = false;
 
 function modelReady() {
   isModelReady = true;
   document.getElementById("status").innerHTML = "Ready!";
-  document.getElementById("loading-spinner").classList.add("d-none");
 }
 
 function addSample() {
   if (!isModelReady) return alert("Model is still loading, please wait");
-
   const className = document.getElementById("class-name").value.trim();
   if (!className) return alert("Enter a class name first");
 
@@ -70,7 +66,7 @@ async function trainAndSave() {
     document.getElementById("status").innerHTML = "Saving...";
     const modelData = await classifier.getClassifierData();
 
-    await fetch("/admin/save-classifier", {
+    await fetch("/admin/save-class", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -132,6 +128,9 @@ function renderGallery() {
     )
     .join("");
 }
+
+let savedLat = null;
+let savedLon = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   document

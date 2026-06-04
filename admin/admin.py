@@ -31,9 +31,9 @@ def create_task():
             flash("Choose an answer class", "warning")
     return render_template("admin/create_task.html", Class=Class)
 
-@admin_bp.route("/save-classifier", methods=["POST"])
+@admin_bp.route("/save-class", methods=["POST"])
 @login_required
-def save_classifier():
+def save_class():
     import json, os
     data = request.get_json()
 
@@ -50,8 +50,9 @@ def save_classifier():
     )
     db.session.add(new_class)
     db.session.commit()
+    flash(f"'{new_class.class_name}' class added successfully", "success")
 
-    return jsonify({"status": "saved"})
+    return redirect(url_for("admin.create_task"))
 
 @admin_bp.route("/train", methods=["GET", "POST"])
 @login_required
