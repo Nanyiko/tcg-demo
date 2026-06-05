@@ -42,8 +42,8 @@
       {% endif %}
     </div>
     <div class="tab-pane fade" id="nav-personal" role="tabpanel">
-      {% for task in tasks %} {% if task.id == current_user.id %} {% include
-      'task.html' %} {% endif %} {% endfor %}
+      {% for task in tasks %} {% if task.user_id == current_user.id %} {%
+      include 'task.html' %} {% endif %} {% endfor %}
     </div>
   </div>
 </div>
