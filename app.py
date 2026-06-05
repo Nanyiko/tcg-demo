@@ -3,7 +3,7 @@ from flask_login import LoginManager, current_user, login_required
 from auth.auth import auth_bp
 from main.main import main_bp
 from admin.admin import admin_bp
-from models import db, User, Task, Progress
+from models import db, User, Task, Progress, Class
 import os
 
 app = Flask(__name__)
@@ -47,12 +47,13 @@ def not_found(e):
 @app.route("/scanner/<int:id>")
 def scanner(id):
     task = Task.query.filter_by(id=id).first()
-    return render_template("scanner.html", task=task)
+    return render_template("scanner.html", task=task, Class=Class)
 
 @app.route("/complete_task/<int:id>")
 def complete_task(id):
     task = Task.query.filter_by(id=id).first()
-    progress = Progress.query.filter_by(user_id=current_user.id, task_id=id).first()
+    if current_user.is_authenticated:
+        progress = Progress.query.filter_by(user_id=current_user.id, task_id=id).first()
     if not progress:
         newProgress = Progress(
             user_id = current_user.id,

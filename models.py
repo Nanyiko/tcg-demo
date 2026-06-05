@@ -17,6 +17,7 @@ class User(db.Model, UserMixin):
     # relationships
     tasks = db.relationship("Task", back_populates="creator", cascade="all, delete-orphan")
     progress = db.relationship("Progress", back_populates="user", cascade="all, delete-orphan")
+    classes = db.relationship("Class", back_populates="creator", cascade="all, delete-orphan")
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
@@ -28,20 +29,38 @@ class User(db.Model, UserMixin):
         return f"<User {self.username}>"
 
 
+class Class(db.Model):
+    __tablename__ = "Class"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("User.id"), nullable=False)
+    class_name = db.Column(db.Text, nullable=False)
+    location = db.Column(db.Boolean, nullable=False)
+    lat = db.Column(db.Float, nullable=True)
+    lon = db.Column(db.Float, nullable=True)
+
+    # relationships
+    creator = db.relationship("User", back_populates="classes")
+    tasks = db.relationship("Task", back_populates="ml_class", cascade="all, delete-orphan")
+
+    def __repr__(self):
+        return f"<Class {self.class_name}>"
+
+
 class Task(db.Model):
     __tablename__ = "Task"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.BigInteger, db.ForeignKey("User.id"), nullable=False)
-
+    user_id = db.Column(db.Integer, db.ForeignKey("User.id"), nullable=False)
+    class_id = db.Column(db.Integer, db.ForeignKey("Class.id"), nullable=False)
     title = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=False)
     hint = db.Column(db.Text, nullable=True)
-    answer = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))
+    created_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
 
     # relationships
     creator = db.relationship("User", back_populates="tasks")
+    ml_class = db.relationship("Class", back_populates="tasks")
     progress = db.relationship("Progress", back_populates="task", cascade="all, delete-orphan")
 
     def __repr__(self):
@@ -52,10 +71,10 @@ class Progress(db.Model):
     __tablename__ = "Progress"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.BigInteger, db.ForeignKey("User.id"), nullable=False)
-    task_id = db.Column(db.BigInteger, db.ForeignKey("Task.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("User.id"), nullable=False)
+    task_id = db.Column(db.Integer, db.ForeignKey("Task.id"), nullable=False)
     completed = db.Column(db.Boolean, default=False)
-    completed_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+    completed_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     # relationships
     user = db.relationship("User", back_populates="progress")

@@ -56,7 +56,8 @@
     <div class="tab-pane fade" id="nav-incomplete" role="tabpanel">
       {% for task in tasks %} {% if not
       Progress.query.filter_by(user_id=current_user.id, task_id=task.id).first()
-      %} {% include 'task.html' %} {% endif %} {% endfor %}
+      %} {% set no_incomplete = False %} {% include 'task.html' %} {% endif %}
+      {% endfor %}
     </div>
     <div
       class="tab-pane fade"
@@ -66,7 +67,8 @@
     >
       {% for task in tasks %} {% if
       Progress.query.filter_by(user_id=current_user.id, task_id=task.id).first()
-      %} {% include 'task.html' %} {% endif %} {% endfor %}
+      %} {% set no_complete = False %} {% include 'task.html' %} {% endif %} {%
+      endfor %}
     </div>
   </div>
 </div>

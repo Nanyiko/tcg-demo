@@ -1,0 +1,177 @@
+{% extends "base.html" %} {% block title %}Train{% endblock %} {% block content
+%}
+<script src="https://unpkg.com/ml5@0.12.2/dist/ml5.min.js"></script>
+<script src="{{ url_for('static', filename='js/train.js') }}"></script>
+<div class="container" style="text-align: center; justify-content: center">
+  <video
+    id="webcam"
+    autoplay
+    playsinline
+    style="width: 100%; max-width: 400px; display: block"
+  ></video>
+
+  <input
+    type="text"
+    id="class-name"
+    placeholder="Enter class name"
+    class="form-control mb-3"
+    autocapitalize="none"
+    autocomplete="off"
+  />
+  <button onclick="addSample()" class="btn btn-primary">Add Sample</button>
+  <button
+    data-bs-toggle="modal"
+    data-bs-target="#confirm-modal"
+    class="btn btn-primary"
+  >
+    Train & Save
+  </button>
+  <p id="status" class="h5 mt-3">Loading...</p>
+  <div class="spinner-border text-light" role="status" id="loading-spinner">
+    <span class="sr-only"></span>
+  </div>
+
+  <div id="sample-gallery"></div>
+</div>
+
+<form method="POST" id="class-form">
+  <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="modal-title">Add class</p>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Created by:</label>
+            <input
+              class="form-control"
+              type="text"
+              placeholder="{{ current_user.username }}"
+              readonly
+            />
+          </div>
+          <br />
+
+          <div class="form-group">
+            <label for="class-name">Class name:</label>
+            <input
+              class="form-control"
+              type="text"
+              id="confirm-class-name"
+              readonly
+              name="class-name"
+            />
+          </div>
+          <br />
+
+          <div class="form-group">
+            <div class="form-check" id="location">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="location"
+                value="yes"
+                id="flexCheckDefault"
+              />
+              <label class="form-check-label" for="flexCheckDefault">
+                Add current location
+              </label>
+              <div
+                class="spinner-border text-light d-none"
+                role="status"
+                id="location-spinner"
+              >
+                <span class="sr-only"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="trainAndSave()"
+          >
+            Train & Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<script>
+  document.addEventListener("shown.bs.modal", () => {
+    document.getElementById("confirm-class-name").placeholder =
+      document.getElementById("class-name").value;
+  });
+</script>
+<button
+  class="btn btn-lg btn-primary"
+  id="bottom-btn"
+  data-bs-toggle="modal"
+  data-bs-target="#instruction-modal"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    fill="currentColor"
+    class="bi bi-question-circle"
+    viewBox="0 0 16 16"
+  >
+    <path
+      d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"
+    />
+    <path
+      d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94"
+    />
+  </svg>
+</button>
+<div
+  class="modal modal-xl fade"
+  id="instruction-modal"
+  tabindex="-1"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <p class="modal-title">How to train</p>
+      </div>
+      <div class="modal-body">
+        <ol class="list-group list-group-flush">
+          <li class="list-group-item">
+            Wait for the camera to load and the status to say
+            <strong>Ready!</strong>
+          </li>
+          <li class="list-group-item">
+            Type a class name in the text box (e.g.
+            <code>library_entrance</code>)
+          </li>
+          <li class="list-group-item">
+            Point the camera at the object or location
+          </li>
+          <li class="list-group-item">
+            Click <strong>Add Sample</strong> repeatedly from different angles
+            (aim for at least 20 samples per class)
+          </li>
+          <li class="list-group-item">
+            Once the class has enough samples, click
+            <strong>Train & Save</strong>
+          </li>
+          <li class="list-group-item">
+            Wait for training to complete — the status will say
+            <strong>Saved!</strong> when done
+          </li>
+        </ol>
+        <p>
+          Tips: vary your distance and angle for each sample. More samples =
+          better accuracy.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
